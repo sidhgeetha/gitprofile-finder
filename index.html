@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/src/style.css" rel="stylesheet">
+  </head>
+  <body class="bg-black text-center px-12 py-12 ">
+    <h1
+      class="text-4xl font-bold  bg-gradient-to-r from-purple-800 via-green-400 to-purple-400 bg-clip-text text-transparent">
+      Github profile finder!
+    </h1>
+
+    <main
+      class=" items-center align-center justify-center  m-12 mb-10">
+
+      <input type="text" id="username"
+        class="px-4 py-4 mb-10 text-slate-900  bg-white/10 backdrop-blur-xl border border-white/20 
+           shadow-lg shadow-black/20 text-white placeholder-white/50
+           focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all rounded-full w-full max-w-2xl "
+        placeholder="Enter user profile name...." />
+      <button id="searchBtn"
+        class="px-6 py-4 rounded-full w-full max-w-[160px] ml-4
+           bg-purple-700/30 backdrop-blur-xl border border-white/30 text-white font-semibold
+            shadow-lg shadow-black/20
+           hover:border-blue-600 transition-all">Search</button>
+
+      <!-- <div class="grid grid-cols-1 md:grid-cols-4 gap-6 "> -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="profile"
+        class></div>
+      <!-- </div> -->
+
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+
+</html>
