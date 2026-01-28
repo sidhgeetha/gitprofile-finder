@@ -3,6 +3,7 @@ const profileDiv = document.getElementById("profile");
 const input = document.getElementById("username");
 
 button.addEventListener("click", fetchUsers);
+input.addEventListener("keyup", fetchUsers);
 
 async function fetchUsers() {
   const username = input.value.trim();
