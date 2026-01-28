@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -27,14 +27,59 @@
             shadow-lg shadow-black/20
            hover:border-blue-600 transition-all">Search</button>
 
-      <!-- <div class="grid grid-cols-1 md:grid-cols-4 gap-6 "> -->
+     
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="profile"
         class></div>
-      <!-- </div> -->
+     
 
     </main>
 
     <script type="module" src="/src/main.js"></script>
   </body>
 
+</html> -->
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/src/style.css" rel="stylesheet" />
+    <link rel="icon" href="/git.png" type="image/svg+xml" />
+    <title>GitHub Profile Finder</title>
+  </head>
+
+  <body class="bg-black text-center px-12 py-12 text-white">
+    <h1
+      class="text-4xl font-bold bg-gradient-to-r from-purple-800 via-green-400 to-purple-400 bg-clip-text text-transparent mb-12">
+      GitHub Profile Finder
+    </h1>
+
+    <main class="flex flex-col items-center">
+      <div class="flex flex-col md:flex-row gap-4 w-full max-w-2xl mb-10">
+        <input
+          type="text"
+          id="username"
+          placeholder="Enter GitHub username..."
+          class="px-6 py-4 text-white bg-white/10 backdrop-blur-xl border border-white/20
+                 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 w-full"
+        />
+
+        <button
+          id="searchBtn"
+          class="px-6 py-4 rounded-full bg-purple-700/30 backdrop-blur-xl
+                 border border-white/30 font-semibold hover:border-blue-600 transition-all">
+          Search
+        </button>
+      </div>
+
+      <div
+        id="profile"
+        class="grid grid-cols-1 md:grid-cols-4 gap-6 w-full">
+      </div>
+    </main>
+
+   <script src="./src/main.js" defer></script>
+  </body>
 </html>

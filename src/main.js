@@ -1,48 +1,70 @@
 const button = document.getElementById("searchBtn");
 const profileDiv = document.getElementById("profile");
+const input = document.getElementById("username");
 
-button.addEventListener("click", async () => {
-  const usernameInput = document.getElementById("username");
-  const username = usernameInput.value.trim(); // remove extra spaces
+button.addEventListener("click", fetchUsers);
 
-  profileDiv.innerHTML = ""; // clear previous results
+async function fetchUsers() {
+  const username = input.value.trim();
+  profileDiv.innerHTML = "";
 
   if (!username) {
-    profileDiv.innerHTML = `<p style="color:red">Please enter a username</p>`;
+    profileDiv.innerHTML = `<p class="text-red-500 col-span-full">Please enter a username</p>`;
     return;
   }
 
   try {
+    // Search for users with fuzzy matching, limit to 5 results
     const response = await fetch(
-      `https://api.github.com/search/users?q=${username}`,
+      `https://api.github.com/search/users?q=${username}&per_page=5`,
     );
-
     if (!response.ok) {
-      throw new Error("User not found");
+      if (response.status === 403) {
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
+      throw new Error("Something went wrong");
     }
-
-    profileDiv.innerHTML = "";
 
     const data = await response.json();
 
-    data.items.forEach((user) => {
-      profileDiv.innerHTML += `
-    <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center text-white  border border-blue-600/70 shadow-lg flex flex-col items-center justify-center ">
-      <img src="${user.avatar_url}" width="150" alt="Profile Picture" />
-      <h3>${user.id || "No name available"}</h3>
-      <p><strong>Username:</strong> @${user.login}</p>
-      
-     
-      <p class="mb-2"><strong>User view:</strong> ${user.user_view_type}</p>
-      <p><a href="${user.html_url}" target="_blank" class="bg-purple-400 rounded p-1 text-sm text-slate-800 font-medium">View on GitHub</a></p>
-       </div>
-    `;
-    });
-  } catch (error) {
-    profileDiv.innerHTML = `<p style="color:red">${error.message}</p>`;
-  }
-});
+    if (data.total_count === 0) {
+      profileDiv.innerHTML = `<p class="col-span-full">No users found</p>`;
+      return;
+    }
 
-// <p><strong>Bio:</strong> ${user.bio || "No bio available"}</p>
-//  <p><strong>Public Repos:</strong> ${user.public_repos}</p>
-//       <p><strong>Followers:</strong> ${user.followers}</p>
+    // Display each matched user
+    for (const user of data.items) {
+      const userResponse = await fetch(
+        `https://api.github.com/users/${user.login}`,
+      );
+      if (!userResponse.ok) continue; // skip if failed
+
+      const userData = await userResponse.json();
+
+      profileDiv.innerHTML += `
+              <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center
+                          border border-blue-600/70 shadow-lg flex flex-col items-center">
+
+                <img src="${userData.avatar_url}" class="w-28 h-28 rounded-full mb-4" />
+                <h3 class="text-lg font-semibold">${userData.name || "No name"}</h3>
+                <p class="text-sm text-purple-300">@${userData.login}</p>
+                <p class="text-sm mt-2">${userData.bio || "No bio available"}</p>
+
+                <div class="flex justify-center items-center text-center bg-indigo-100 border text-slate-800 text-xs gap-4 mt-4 rounded p-2">
+                  <span>👥 Followers ${userData.followers}</span>
+                  <span>➡️ Following ${userData.following}</span>
+                  <span>📦 Repos ${userData.public_repos}</span>
+                </div>
+
+                <a href="${userData.html_url}" target="_blank"
+                   class="mt-4 bg-purple-400 rounded px-3 py-1 text-sm
+                          text-slate-900 font-medium hover:bg-purple-500">
+                  View on GitHub
+                </a>
+              </div>
+            `;
+    }
+  } catch (error) {
+    profileDiv.innerHTML = `<p class="text-red-500 col-span-full">${error.message}</p>`;
+  }
+}
